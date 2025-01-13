@@ -56,11 +56,28 @@ class ProjectAgent:
     def __init__(self, model_path = 'AgentDQN.pt'):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        self.config = {'nb_actions' : 4,
-                        'hidden_dim' : 256,
-                        'nb_states' : 6}
+        self.nb_actions = 4
+        self.hidden_dim = 256
+        self.nb_states = 6
         
         self.model_path = model_path
+
+    def Init_DQN(self):
+        dqnet = nn.Sequential(
+            nn.Linear(self.nb_states, self.hidden_dim),
+            nn.ReLU(),
+            nn.Linear(self.hidden_dim, self.hidden_dim),
+            nn.ReLU(),
+            nn.Linear(self.hidden_dim, self.hidden_dim),
+            nn.ReLU(),
+            nn.Linear(self.hidden_dim, self.hidden_dim),
+            nn.ReLU(),
+            nn.Linear(self.hidden_dim, self.hidden_dim),
+            nn.ReLU(),
+            nn.Linear(self.hidden_dim, self.nb_actions)
+        ).to(self.device)
+
+        return dqnet
 
     def act(self, observation):
         with torch.no_grad():
@@ -71,6 +88,6 @@ class ProjectAgent:
         pass
 
     def load(self):
-        self.model = DQN(self.config).to(self.device)
+        self.model = self.Init_DQN()
         self.model.load_state_dict(torch.load(self.model_path, self.device))
         self.model.eval()
