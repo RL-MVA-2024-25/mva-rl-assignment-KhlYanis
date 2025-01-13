@@ -59,5 +59,5 @@ class ProjectAgent:
 
     def load(self):
         self.model = self.Init_DQN()
-        self.model.load_state_dict(torch.load(self.model_path, map_location = self.device))
+        self.model.load_state_dict(torch.load(self.model_path))
         self.model.eval()
