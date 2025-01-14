@@ -2,7 +2,6 @@ from gymnasium.wrappers import TimeLimit
 from env_hiv import HIVPatient
 import torch
 import torch.nn as nn
-from src.dqn import DQN
 
 
 env = TimeLimit(
